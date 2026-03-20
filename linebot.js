@@ -1,12 +1,10 @@
 const express = require("express");
 const crypto = require("crypto");
 const Groq = require("groq-sdk");
-
 const app = express();
-const groq = new Groq({ apiKey: "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" });
-
-const CHANNEL_SECRET = "615a961c51b41986398c4a23a7940c3a";
-const CHANNEL_ACCESS_TOKEN = "9dlppFHM3mxiunLHCzHlbX8OkCrBdHVzPjCEYbHViQIt5m9ZCfph0PXZYqveM+i873WB1nhYRGBVcSXYWc7AcV6MS1uhP1WLK6UHQOftmykHBRVRlVauzlP8/2rTBcxgsmLdfzsk1sCOPdoFMdChawdB04t89/1O/w1cDnyilFU=";
+const CHANNEL_SECRET = process.env.CHANNEL_SECRET;
+const CHANNEL_ACCESS_TOKEN = process.env.CHANNEL_ACCESS_TOKEN;
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 app.use(express.json({
   verify: (req, res, buf) => { req.rawBody = buf; }
