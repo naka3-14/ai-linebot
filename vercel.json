@@ -1,15 +1,9 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "linebot.js",
-      "use": "@vercel/node"
-    }
-  ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "linebot.js"
+      "dest": "/linebot.js"
     }
   ]
 }
