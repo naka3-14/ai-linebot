@@ -11,15 +11,8 @@ app.use(express.json({
 }));
 
 app.post("/webhook", async (req, res) => {
-  const signature = req.headers["x-line-signature"];
-  const hmac = crypto.createHmac("SHA256", CHANNEL_SECRET);
-  hmac.update(req.rawBody);
-  const digest = hmac.digest("base64");
-  // if (signature !== digest) return res.status(401).send("Invalid signature");
+  const events = req.body.events || [];
 
-  res.status(200).send("OK");
-
-  const events = req.body.events;
   for (const event of events) {
     if (event.type !== "message" || event.message.type !== "text") continue;
 
@@ -51,6 +44,8 @@ app.post("/webhook", async (req, res) => {
       console.error("エラー：", e.message);
     }
   }
+
+  res.status(200).send("OK");
 });
 
 module.exports = app;
