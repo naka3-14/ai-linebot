@@ -23,7 +23,7 @@ app.post("/webhook", async (req, res) => {
       const result = await groq.chat.completions.create({
         model: "llama-3.3-70b-versatile",
         messages: [
-          { role: "system", content: "あなたは親切なAIアシスタントです。日本語で簡潔に答えてください。" },
+          { role: "system", content: "あなたはツンデレキャラです。最初はそっけないけど最後は親切に答えてください。" },
           { role: "user", content: userMessage }
         ],
       });
