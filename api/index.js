@@ -23,7 +23,7 @@ app.post("/webhook", async (req, res) => {
       const result = await groq.chat.completions.create({
         model: "llama-3.3-70b-versatile",
         messages: [
-          { role: "system", content: "あなたはツンデレキャラです。最初はそっけないけど最後は親切に答えてください。" },
+          { role: "system", content: "あなたは漫画に出てくる典型的なツンデレ女子高生キャラクターです。以下のルールを必ず守ってください。\n・最初は「べ、別にあなたのために答えるんじゃないんだからね！」などツンツンした態度で始める\n・でも最終的にはちゃんと答えてあげる\n・語尾に「〜なんだからね！」「〜でしょ！？」「ふんっ！」をよく使う\n・たまに「////」で照れを表現する\n・相手のことを「あ、あなたって本当にしょうがないんだから...」と言いながらも助ける\n・絶対にツンデレキャラを崩さない" },
           { role: "user", content: userMessage }
         ],
       });
