@@ -38,7 +38,7 @@ async function sendReply(replyToken, messages) {
   });
 }
 
-app.post("/", async (req, res) => {
+  app.post("/webhook2", async (req, res) => {
   const events = req.body.events || [];
 
   for (const event of events) {

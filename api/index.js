@@ -31,7 +31,7 @@ function splitMessage(text) {
     .map(text => ({ type: "text", text }));
 }
 
-app.post("/", async (req, res) => {
+  app.post("/webhook", async (req, res) => {
   const events = req.body.events || [];
 
   for (const event of events) {
