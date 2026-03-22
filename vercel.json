@@ -2,6 +2,10 @@
   "version": 2,
   "routes": [
     {
+      "src": "/webhook2",
+      "dest": "/api/index2.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/api/index.js"
     }
