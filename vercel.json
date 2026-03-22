@@ -1,3 +1,13 @@
 {
-  "version": 2
+  "version": 2,
+  "routes": [
+    {
+      "src": "/webhook2",
+      "dest": "/api/index2.js"
+    },
+    {
+      "src": "/webhook",
+      "dest": "/api/index.js"
+    }
+  ]
 }
