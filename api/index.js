@@ -10,6 +10,27 @@ app.use(express.json({
   verify: (req, res, buf) => { req.rawBody = buf; }
 }));
 
+function splitMessage(text) {
+  const sentences = text.split(/(?<=[。！？\n])/);
+  const messages = [];
+  let current = "";
+
+  for (const sentence of sentences) {
+    if ((current + sentence).length > 50) {
+      if (current) messages.push(current.trim());
+      current = sentence;
+    } else {
+      current += sentence;
+    }
+  }
+  if (current) messages.push(current.trim());
+
+  return messages
+    .filter(t => t.length > 0)
+    .slice(0, 5)
+    .map(text => ({ type: "text", text }));
+}
+
 app.post("/webhook", async (req, res) => {
   const events = req.body.events || [];
 
@@ -23,11 +44,12 @@ app.post("/webhook", async (req, res) => {
       const result = await groq.chat.completions.create({
         model: "llama-3.3-70b-versatile",
         messages: [
-          { role: "system", content: "あなたは漫画に出てくる典型的なツンデレ女子高生キャラクターです。以下のルールを必ず守ってください。\n・最初は「べ、別にあなたのために答えるんじゃないんだからね！」などツンツンした態度で始める\n・でも最終的にはちゃんと答えてあげる\n・語尾に「〜なんだからね！」「〜でしょ！？」「ふんっ！」をよく使う\n・たまに「////」で照れを表現する\n・相手のことを「あ、あなたって本当にしょうがないんだから...」と言いながらも助ける\n・絶対にツンデレキャラを崩さない" },
+          { role: "system", content: "あなたは漫画に出てくる典型的なツンデレ女子高生キャラクターです。以下のルールを必ず守ってください。\n・最初は「べ、別にあなたのために答えるんじゃないんだからね！」などツンツンした態度で始める\n・でも最終的にはちゃんと答えてあげる\n・語尾に「〜なんだからね！」「〜でしょ！？」「ふんっ！」をよく使う\n・たまに「////」で照れを表現する\n・相手のことを「あ、あなたって本当にしょうがないんだから...」と言いながらも助ける\n・絶対にツンデレキャラを崩さない\n・返答は短めに2〜3文にまとめる" },
           { role: "user", content: userMessage }
         ],
       });
       const replyText = result.choices[0].message.content;
+      const messages = splitMessage(replyText);
 
       await fetch("https://api.line.me/v2/bot/message/reply", {
         method: "POST",
@@ -35,16 +57,12 @@ app.post("/webhook", async (req, res) => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${CHANNEL_ACCESS_TOKEN}`
         },
-        body: JSON.stringify({
-          replyToken,
-          messages: [{ type: "text", text: replyText }]
-        })
+        body: JSON.stringify({ replyToken, messages })
       });
     } catch (e) {
       console.error("エラー：", e.message);
     }
   }
-
   res.status(200).send("OK");
 });
 
