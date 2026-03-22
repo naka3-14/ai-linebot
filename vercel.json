@@ -1,5 +1,13 @@
 {
   "version": 2,
+  "functions": {
+    "api/index.js": {
+      "memory": 1024
+    },
+    "api/index2.js": {
+      "memory": 1024
+    }
+  },
   "routes": [
     {
       "src": "/webhook2",
@@ -7,10 +15,6 @@
     },
     {
       "src": "/webhook",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/(.*)",
       "dest": "/api/index.js"
     }
   ]
